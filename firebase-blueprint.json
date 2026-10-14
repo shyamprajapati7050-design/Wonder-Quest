@@ -1,0 +1,309 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Registered user profile with account details, email, age, grade level, role, and progress tracking",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique user identifier matching Firebase Auth UID",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User email address",
+          "maxLength": 256
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name or full name",
+          "maxLength": 100
+        },
+        "age": {
+          "type": "number",
+          "description": "User age entered during registration"
+        },
+        "gradeLevel": {
+          "type": "string",
+          "description": "User academic grade level (e.g. nursery to class_12)",
+          "maxLength": 32
+        },
+        "role": {
+          "type": "string",
+          "description": "User role in WonderQuest",
+          "enum": ["parent", "student", "teacher", "admin"]
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "Parent or student contact phone number",
+          "maxLength": 32
+        },
+        "language": {
+          "type": "string",
+          "description": "Preferred interface and audio language (en, hi, te, kn, ml)",
+          "maxLength": 16
+        },
+        "progress": {
+          "type": "object",
+          "description": "Progress tracking object including currentLevel, xp, coins, stars, streakDays, and activeStudyBuddy"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp string when user profile was created",
+          "maxLength": 64
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp string when user profile was last updated",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "email", "age", "gradeLevel", "role", "progress"]
+    },
+    "UserProgress": {
+      "title": "UserProgress",
+      "description": "Progress tracking details for learning journey",
+      "type": "object",
+      "properties": {
+        "currentLevel": {
+          "type": "number",
+          "description": "Current learning level number"
+        },
+        "currentWorld": {
+          "type": "number",
+          "description": "Current world number"
+        },
+        "xp": {
+          "type": "number",
+          "description": "Accumulated experience points"
+        },
+        "coins": {
+          "type": "number",
+          "description": "Accumulated wonder coins"
+        },
+        "stars": {
+          "type": "number",
+          "description": "Earned star rewards"
+        },
+        "streakDays": {
+          "type": "number",
+          "description": "Consecutive days learning streak"
+        },
+        "completedLevels": {
+          "type": "array",
+          "description": "List of completed level numbers"
+        },
+        "activeStudyBuddy": {
+          "type": "string",
+          "description": "Selected virtual mentor buddy ID",
+          "maxLength": 64
+        },
+        "lastPlayedDate": {
+          "type": "string",
+          "description": "Date string of last active session",
+          "maxLength": 64
+        }
+      },
+      "required": ["currentLevel", "currentWorld", "xp", "coins", "stars", "streakDays"]
+    },
+    "ChildProfile": {
+      "title": "ChildProfile",
+      "description": "Learner or child profile attached to a parent user account",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique child profile ID",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "description": "Parent user ID",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Learner name",
+          "maxLength": 80
+        },
+        "age": {
+          "type": "number",
+          "description": "Learner age"
+        },
+        "ageGroup": {
+          "type": "string",
+          "description": "Age bracket category",
+          "maxLength": 30
+        },
+        "gradeLevel": {
+          "type": "string",
+          "description": "Academic grade level ID",
+          "maxLength": 30
+        },
+        "avatar": {
+          "type": "string",
+          "description": "Avatar emoji or identifier",
+          "maxLength": 30
+        },
+        "activeStudyBuddy": {
+          "type": "string",
+          "description": "Selected virtual mentor buddy ID",
+          "maxLength": 60
+        },
+        "currentLevel": {
+          "type": "number",
+          "description": "Current story progression level"
+        },
+        "currentWorld": {
+          "type": "number",
+          "description": "Current world"
+        },
+        "xp": {
+          "type": "number",
+          "description": "Accumulated experience points"
+        },
+        "coins": {
+          "type": "number",
+          "description": "Accumulated gold coins"
+        },
+        "stars": {
+          "type": "number",
+          "description": "Earned star rewards"
+        },
+        "streakDays": {
+          "type": "number",
+          "description": "Consecutive days streak"
+        },
+        "lastPlayedDate": {
+          "type": "string",
+          "description": "Date string of last active play session",
+          "maxLength": 64
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp string when profile was created",
+          "maxLength": 64
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp string when profile was updated",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "userId", "name", "age", "ageGroup", "currentLevel", "xp", "coins", "stars"]
+    },
+    "AdminDoc": {
+      "title": "AdminDoc",
+      "description": "Document marking a user as an administrator",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Admin email",
+          "maxLength": 256
+        }
+      },
+      "required": ["email"]
+    },
+    "SubjectBookFeedback": {
+      "title": "SubjectBookFeedback",
+      "description": "Student or parent feedback submitted upon completing a full subject book with rating, reactions, comments and certificate info",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique feedback ID",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "description": "Parent or student user ID",
+          "maxLength": 128
+        },
+        "childId": {
+          "type": "string",
+          "description": "Child profile ID",
+          "maxLength": 128
+        },
+        "childName": {
+          "type": "string",
+          "description": "Name of child learner who completed the book",
+          "maxLength": 100
+        },
+        "gradeLevel": {
+          "type": "string",
+          "description": "Grade level of the subject book",
+          "maxLength": 32
+        },
+        "subjectId": {
+          "type": "string",
+          "description": "Subject identifier (e.g. math, science, english)",
+          "maxLength": 32
+        },
+        "bookTitle": {
+          "type": "string",
+          "description": "Full title of the subject book completed",
+          "maxLength": 150
+        },
+        "rating": {
+          "type": "number",
+          "description": "Star rating from 1 to 5"
+        },
+        "reaction": {
+          "type": "string",
+          "description": "Emoji reaction keyword (loved, fun, challenging, helpful)",
+          "maxLength": 32
+        },
+        "comment": {
+          "type": "string",
+          "description": "User feedback comments and suggestions",
+          "maxLength": 1000
+        },
+        "tags": {
+          "type": "array",
+          "description": "Selected feedback highlights"
+        },
+        "difficultyRating": {
+          "type": "string",
+          "description": "Perceived difficulty level (easy, just_right, hard)",
+          "maxLength": 32
+        },
+        "recommend": {
+          "type": "boolean",
+          "description": "Whether user would recommend this book"
+        },
+        "completedAt": {
+          "type": "string",
+          "description": "Timestamp when book was completed",
+          "maxLength": 64
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when feedback was submitted",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "childId", "gradeLevel", "subjectId", "rating"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Stores user accounts with email, age, grade level, role, and progress tracking"
+    },
+    "/users/{userId}/children/{childId}": {
+      "schema": "ChildProfile",
+      "description": "Stores child learner profiles with gamification progress, coins, xp, study buddy"
+    },
+    "/users/{userId}/bookFeedback/{feedbackId}": {
+      "schema": "SubjectBookFeedback",
+      "description": "Stores user feedback, star ratings, and review comments for completed subject books"
+    },
+    "/admins/{adminId}": {
+      "schema": "AdminDoc",
+      "description": "Administrator registry documents"
+    }
+  }
+}

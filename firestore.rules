@@ -1,0 +1,94 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Security primitive helpers
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        request.auth.token.email == 'shyamprajapati7050@gmail.com'
+      );
+    }
+
+    // Validation helper for User document
+    function isValidUser(data) {
+      return data.keys().hasAll(['id', 'email', 'age', 'role']) &&
+        data.id is string && data.id == request.auth.uid &&
+        data.email is string && data.email.size() > 0 && data.email.size() <= 256 &&
+        data.age is number && data.age >= 1 && data.age <= 120 &&
+        data.role is string && (data.role in ['parent', 'student', 'teacher', 'admin']) &&
+        (!('gradeLevel' in data) || (data.gradeLevel is string && data.gradeLevel.size() <= 32)) &&
+        (!('phoneNumber' in data) || (data.phoneNumber is string && data.phoneNumber.size() <= 32)) &&
+        (!('language' in data) || (data.language is string && data.language.size() <= 16)) &&
+        (!('progress' in data) || data.progress is map);
+    }
+
+    // Validation helper for ChildProfile document
+    function isValidChild(data) {
+      return data.keys().hasAll(['id', 'userId', 'name', 'age', 'ageGroup', 'currentLevel', 'xp', 'coins', 'stars']) &&
+        data.id is string && data.id.size() <= 128 &&
+        data.userId is string && data.userId == request.auth.uid &&
+        data.name is string && data.name.size() > 0 && data.name.size() <= 80 &&
+        data.age is number && data.age >= 1 && data.age <= 25 &&
+        data.currentLevel is number &&
+        data.xp is number &&
+        data.coins is number &&
+        data.stars is number;
+    }
+
+    // User accounts collection
+    match /users/{userId} {
+      allow get: if isValidId(userId) && (isOwner(userId) || isAdmin());
+      allow list: if isAdmin();
+      allow create: if isValidId(userId) && isOwner(userId) && isValidUser(incoming());
+      allow update: if isValidId(userId) && (isOwner(userId) || isAdmin()) && isValidUser(incoming());
+      allow delete: if isValidId(userId) && (isOwner(userId) || isAdmin());
+
+      // Child learner subcollection
+      match /children/{childId} {
+        allow get, list: if isValidId(userId) && (isOwner(userId) || isAdmin());
+        allow create: if isValidId(userId) && isValidId(childId) && isOwner(userId) && isValidChild(incoming());
+        allow update: if isValidId(userId) && isValidId(childId) && (isOwner(userId) || isAdmin()) && isValidChild(incoming());
+        allow delete: if isValidId(userId) && isValidId(childId) && (isOwner(userId) || isAdmin());
+      }
+
+      // Subject Book Feedback subcollection
+      match /bookFeedback/{feedbackId} {
+        allow get, list: if isValidId(userId) && (isOwner(userId) || isAdmin());
+        allow create, update: if isValidId(userId) && isValidId(feedbackId) && (isOwner(userId) || isAdmin());
+        allow delete: if isValidId(userId) && isValidId(feedbackId) && (isOwner(userId) || isAdmin());
+      }
+    }
+
+    // Admins registry
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+  }
+}

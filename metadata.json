@@ -1,0 +1,6 @@
+{
+  "name": "WonderQuest: Kids Educational Gaming & Adventure Platform",
+  "description": "An interactive, safe, and adaptive educational gaming platform for students from Nursery to 12th Class (Ages 3-18) with progressive 25-question levels, Read & Learn lessons, Master Tests, rewards, and parent oversight.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

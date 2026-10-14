@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F46E5" />
+      <stop offset="50%" stop-color="#7C3AED" />
+      <stop offset="100%" stop-color="#EC4899" />
+    </linearGradient>
+    <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Background Rounded Squircle -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+  
+  <!-- Subtle inner circle highlight -->
+  <circle cx="256" cy="256" r="210" fill="none" stroke="#FFFFFF" stroke-opacity="0.15" stroke-width="8" stroke-dasharray="16 12"/>
+  
+  <!-- Outer glowing emblem -->
+  <g filter="url(#glow)">
+    <!-- Central Book / Quest Tablet -->
+    <path d="M 128 340 C 180 320, 240 328, 256 350 C 272 328, 332 320, 384 340 L 384 190 C 332 170, 272 178, 256 200 C 240 178, 180 170, 128 190 Z" fill="#FFFFFF" opacity="0.95"/>
+    <path d="M 256 200 L 256 350" stroke="#7C3AED" stroke-width="6" stroke-linecap="round"/>
+    
+    <!-- Magical Sparkles / Star on Top -->
+    <polygon points="256,100 274,142 320,146 285,176 296,220 256,196 216,220 227,176 192,146 238,142" fill="url(#starGrad)" filter="url(#glow)"/>
+    
+    <!-- Mini sparkle left & right -->
+    <polygon points="170,130 176,146 192,148 180,159 184,175 170,166 156,175 160,159 148,148 164,146" fill="#FDE047" opacity="0.9"/>
+    <polygon points="342,130 348,146 364,148 352,159 356,175 342,166 328,175 332,159 320,148 336,146" fill="#FDE047" opacity="0.9"/>
+
+    <!-- Educational Graduation Cap Accent -->
+    <path d="M 210 240 L 256 216 L 302 240 L 256 264 Z" fill="#4F46E5"/>
+    <polygon points="256,264 256,280 240,290 272,290 256,280" fill="#3730A3"/>
+    
+    <!-- Letter Q & W Emblem or Mascot smile -->
+    <circle cx="215" cy="275" r="8" fill="#4F46E5"/>
+    <circle cx="297" cy="275" r="8" fill="#4F46E5"/>
+    <path d="M 235 295 Q 256 315 277 295" stroke="#EC4899" stroke-width="5" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>
